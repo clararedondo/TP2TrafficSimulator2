@@ -29,4 +29,11 @@ public class SetWeatherEvent extends Event {
 
 	}
 
+
+
+	@Override
+	public String toString() { //TO DO
+		return null;
+	}
+
 }

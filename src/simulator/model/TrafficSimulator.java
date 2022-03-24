@@ -6,9 +6,10 @@ import org.json.JSONObject;
 
 import simulator.misc.SortedArrayList;
 
-public class TrafficSimulator {
+public class TrafficSimulator implements Observable<TrafficSimObserver>{
 	private RoadMap roadMap;
 	private List<Event> eventList; 
+	private List<TrafficSimObserver> obs;
 	private int simTime;
 
 	
@@ -22,21 +23,17 @@ public class TrafficSimulator {
 	//trying things	
 		if (e._time > simTime) {
 		eventList.add(e);
+		notifyEventAdded(e);
 		}
-		else throw new IllegalArgumentException("Invalid execution time.");
+		else notifyError("Invalid execution time.");
 	}
 
+	
+
 	public void advance() {
-		//1 inc sim time
 		simTime++;
+		notifyAdvanceStart();
 		
-		//2 execute events w current sim time & remove from list
-//		for (Event e : eventList) {
-//			if (e._time == simTime) {
-//				e.execute(roadMap);
-//				eventList.remove(e);
-//			}
-//		}
 		for (int i = 0; i < eventList.size(); ++i) {
 			if (!eventList.isEmpty()) {
 				if (eventList.get(i)._time == simTime) {
@@ -48,26 +45,36 @@ public class TrafficSimulator {
 			else {
 				break;
 			}
+			notifyAdvanceEnd();
 		}
 		
 		//3 calls advance method of all junctions
 		for (Junction j: roadMap.getJunctions()) {
 			j.advance(simTime);
+			//notifyError
 		}
 		
 		//4 calls advance method of all roads
 		for (Road r: roadMap.getRoads()) {
 			r.advance(simTime);
+			//notifyError
 		}
 	}
+
+
+
+	
 
 	public void reset() { 
 		roadMap.reset();
 		eventList.clear();
 		simTime = 0;
+		notifyReset();
 		
 	}
 	
+	
+
 	public JSONObject report() {
 		JSONObject jo = new JSONObject();
 		jo.put("time", simTime);
@@ -75,6 +82,62 @@ public class TrafficSimulator {
 		
 		return jo;
 	}
+
+	
+	//NEW
+	@Override
+	public void addObserver(TrafficSimObserver o) {
+		obs.add(o);
+
+		notifyRegister(o);
+		
+	}
+
 	
 
+	@Override
+	public void removeObserver(TrafficSimObserver o) {
+		obs.remove(o);
+		
+	}
+	
+	private void notifyAdvanceStart() {
+		// TODO Auto-generated method stub
+		for(TrafficSimObserver o: obs) {
+			o.onAdvanceStart(roadMap, eventList, simTime);
+		}
+	}
+
+	private void notifyAdvanceEnd() {
+		for(TrafficSimObserver o: obs) {
+			o.onAdvanceEnd(roadMap, eventList, simTime);
+		
+		}
+	}
+	
+	private void notifyEventAdded(Event e) {
+		for(TrafficSimObserver o: obs) {
+			o.onEventAdded(roadMap, eventList, e, simTime);
+		
+		}
+	}
+	
+	private void notifyReset() {
+		for(TrafficSimObserver o: obs) {
+			o.onReset(roadMap, eventList, simTime);
+		
+		}
+	}
+	
+	//not sure where it goes
+	//only new obs is notified
+	private void notifyRegister(TrafficSimObserver o) {
+			o.onRegister(roadMap, eventList, simTime);
+		
+	}
+	
+	private void notifyError(String string) {
+		throw new IllegalArgumentException(string);
+		
+	}
 }

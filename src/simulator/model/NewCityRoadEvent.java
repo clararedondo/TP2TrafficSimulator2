@@ -29,4 +29,8 @@ public class NewCityRoadEvent extends Event {
 		
 	}
 
+	@Override
+	public String toString() {
+		return "New CityRoad '"+ id +"'";
+		}
 }

@@ -4,6 +4,7 @@ import simulator.model.DequeuingStrategy;
 import simulator.model.Junction;
 import simulator.model.LightSwitchingStrategy;
 
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -118,7 +119,7 @@ public class Junction extends SimulatedObject{
 
 	@Override
 	protected void advance(int time) {
-
+		//throw new Illegal
 	
 		if(greenLightInd != -1 && !queues.isEmpty()) {
 			List<Vehicle> q = rqMap.get(incRoads.get(greenLightInd));
@@ -133,11 +134,29 @@ public class Junction extends SimulatedObject{
 					}
 			}
 		}
+	
 		int ind = lsStrat.chooseNextGreen(incRoads, queues, greenLightInd, lsTime, time);
 		if(ind != greenLightInd) {
 			greenLightInd = ind;
 			lsTime = time;
 		}
+	
+	}
+
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
+
+	public int getGreenLightIndex() {
+		return greenLightInd;
+	}
+
+	public List<Road> getInRoads() {
+		return incRoads;
 	}
 	
 	

@@ -27,4 +27,8 @@ public class NewInterCityRoadEvent extends Event {
 		map.addRoad(icR);
 		
 	}
+	
+	public String toString() {
+		return "New InterCityRoad '"+ id +"'";
+		}
 }
