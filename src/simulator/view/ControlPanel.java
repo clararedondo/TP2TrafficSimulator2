@@ -1,5 +1,7 @@
 package simulator.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -20,6 +22,25 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	
 	public void initPanel() {
 		//initialize buttons
+		//load button     -icon, description, size
+		load = new JButton();
+		load.setLocation(0, 0);
+		load.setSize(120, 30);
+		load.addActionListener( new ActionListener() { 
+			
+			public void actionPerformed(ActionEvent e) {
+				loadEvents();
+		}
+
+	
+		});
+		idkwhichPanel.add(load);
+	}
+	
+
+	private void loadEvents() {
+		// complete
+		
 	}
 
 	@Override
