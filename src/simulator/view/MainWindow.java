@@ -11,15 +11,24 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+
 import extra.jtable.EventsTableModel;
 import simulator.control.Controller;
 
 public class MainWindow extends JFrame {
-    private Controller _ctrl;
+    /**
+	 * 
+	 */ 
+	// ^what does this mean? suppress id
+	
+	
+	private static final long serialVersionUID = 1L;
+	private Controller _ctrl;
     
 
     public MainWindow(Controller ctrl) {
-    	super("Traffic Simulator"); _ctrl = ctrl;
+    	super("Traffic Simulator");
+    	_ctrl = ctrl;
     	initGUI();
     }
     

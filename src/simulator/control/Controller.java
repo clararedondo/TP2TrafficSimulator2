@@ -63,6 +63,15 @@ public class Controller {
 		p.println("}");
 	}
 	
+	//PRACTICE 2 NEW METHODS
+	
+	//run method with only 1 arg
+	public void run(int n) { //should probably throw exceptions
+		for (int i = 0; i< n; ++i) {
+			trafficSim.advance();
+		}
+	}
+	
 	public void reset() {
 		this.trafficSim.reset();
 	}
