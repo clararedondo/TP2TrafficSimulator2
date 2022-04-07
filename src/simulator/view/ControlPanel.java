@@ -2,15 +2,23 @@ package simulator.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import simulator.control.Controller;
 import simulator.model.Event;
@@ -18,6 +26,8 @@ import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 
 public class ControlPanel extends JPanel implements TrafficSimObserver{
+
+	private JFileChooser fileChooser;
 	private Controller _ctrl;
 	public JToolBar toolBar;
 	private JButton load, changeCont, changeW, run, stop, exit;
@@ -40,10 +50,21 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		load = new JButton();
 		load.setToolTipText("Run the simulator.");
 		load.setIcon(new ImageIcon ("resources/icons/open.png"));
-		load.addActionListener( new ActionListener() { 
-			
+		
+		//fileChooser - check this
+		fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "/resources"));
+		fileChooser.setMultiSelectionEnabled(false);
+		
+		load.addActionListener( new ActionListener() { 		
 			public void actionPerformed(ActionEvent e) {
-				loadEvents(); //should open dialogue
+				//should open dialogue
+				try {
+					loadEvents(new FileInputStream(fileChooser.getSelectedFile()));
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} 
 			}	
 		});
 		this.add(load);
@@ -107,8 +128,18 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	}
 	
 
-	private void loadEvents() {
+	private void loadEvents(FileInputStream fileInputStream) {
 		// complete
+		JSONObject jo = new JSONObject(new JSONTokener(fileInputStream));
+		JSONArray events = jo.getJSONArray("events");
+
+		//have to find a way to acces trafficSim and eventsFactory
+		//probably best to call a method in controller that does it
+		//can i use getters and setters? idek
+		
+		for (int i = 0; i < events.length(); i++) {
+			_ctrl.trafficSim.addEvent(_ctrl.evFactory.createInstance(events.getJSONObject(i)));
+		}
 		
 	}
 
@@ -146,6 +177,15 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		_stopped = true;
 	}
 	
+	
+	protected void enableToolBar(Boolean enable) {
+		load.setEnabled(enable);
+		changeCont.setEnabled(enable);
+		changeW.setEnabled(enable);
+		run.setEnabled(enable);
+		ticks.setEnabled(enable);
+		exit.setEnabled(enable);
+	}
 	
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {

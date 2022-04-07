@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import simulator.control.Controller;
+
 public class EventsTableModel extends AbstractTableModel {
 
 	/**
@@ -15,7 +17,7 @@ public class EventsTableModel extends AbstractTableModel {
 	private List<EventEx> _events;
 	private String[] _colNames = { "#", "Time", "Priority" };
 
-	public EventsTableModel() {
+	public EventsTableModel(Controller _ctrl) { //esto es nuevo, no deberia tener argumento
 		_events=null;
 	}
 
