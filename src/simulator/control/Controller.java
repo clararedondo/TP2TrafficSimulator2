@@ -44,6 +44,12 @@ public class Controller {
 		
 	}
 	
+	public void loadEvents2(InputStream in, JSONArray events) {
+		for (int i = 0; i < events.length(); i++) {
+			trafficSim.addEvent(evFactory.createInstance(events.getJSONObject(i)));
+		}
+	}
+	
 	public void run(int n, OutputStream out) throws IOException {
 
 		PrintStream p = new PrintStream(out);

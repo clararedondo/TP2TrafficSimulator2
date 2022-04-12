@@ -1,5 +1,6 @@
 package simulator.view;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -44,7 +45,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	
 	public void initPanel() {
 		toolBar = new JToolBar(); //create toolbar
-		
+		this.add(toolBar, BorderLayout.PAGE_START);
 		//initialize buttons
 		//load button     
 		load = new JButton();
@@ -132,14 +133,16 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		// complete
 		JSONObject jo = new JSONObject(new JSONTokener(fileInputStream));
 		JSONArray events = jo.getJSONArray("events");
-
+	
 		//have to find a way to acces trafficSim and eventsFactory
 		//probably best to call a method in controller that does it
 		//can i use getters and setters? idek
 		
-		for (int i = 0; i < events.length(); i++) {
-			_ctrl.trafficSim.addEvent(_ctrl.evFactory.createInstance(events.getJSONObject(i)));
-		}
+//		for (int i = 0; i < events.length(); i++) {
+//			_ctrl.trafficSim.addEvent(_ctrl.evFactory.createInstance(events.getJSONObject(i)));
+//		}
+		//solution for now 
+		_ctrl.loadEvents2(fileInputStream, events);
 		
 	}
 
