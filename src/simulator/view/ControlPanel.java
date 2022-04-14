@@ -22,12 +22,17 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import simulator.control.Controller;
+import simulator.view.MainWindow; //probando
 import simulator.model.Event;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 
 public class ControlPanel extends JPanel implements TrafficSimObserver{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JFileChooser fileChooser;
 	private Controller _ctrl;
 	public JToolBar toolBar;
@@ -46,11 +51,13 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	public void initPanel() {
 		toolBar = new JToolBar(); //create toolbar
 		this.add(toolBar, BorderLayout.PAGE_START);
+		
 		//initialize buttons
 		//load button     
-		load = new JButton();
+		load = new JButton(new ImageIcon ("resources/icons/open.png"));
 		load.setToolTipText("Run the simulator.");
-		load.setIcon(new ImageIcon ("resources/icons/open.png"));
+		//load.setIcon(new ImageIcon ("resources/icons/open.png"));
+		
 		
 		//fileChooser - check this
 		fileChooser = new JFileChooser();
@@ -63,47 +70,46 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 				try {
 					loadEvents(new FileInputStream(fileChooser.getSelectedFile()));
 				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} 
 			}	
 		});
-		this.add(load);
+		toolBar.add(load);
 		
 		
 		
 		//changeContamination button - 
-		changeCont = new JButton();
+		changeCont = new JButton(new ImageIcon ("resources/icons/co2class.png"));
 		changeCont.setToolTipText("Change the contamination.");
-		changeCont.setIcon(new ImageIcon ("resources/icons/co2class.png"));
+	//	changeCont.setIcon(new ImageIcon ("resources/icons/co2class.png"));
 		changeCont.addActionListener( new ActionListener() { 
 			
 			public void actionPerformed(ActionEvent e) {
 				changeContamination(); //should open dialogue
 			}
 		});
-		this.add(changeCont);
+		toolBar.add(changeCont);
 		
 		
 		
 		//changeWeather button
-		changeW = new JButton();
+		changeW = new JButton(new ImageIcon ("resources/icons/weather.png"));
 		run.setToolTipText("Change the weather.");
-		run.setIcon(new ImageIcon ("resources/icons/weather.png"));
+		//run.setIcon(new ImageIcon ("resources/icons/weather.png"));
 		changeW.addActionListener( new ActionListener() { 
 			
 			public void actionPerformed(ActionEvent e) {
 				changeWeather(); //should open dialogue
 			}
 		});
-		this.add(changeW);
+		toolBar.add(changeW);
 		
 		
 	
 		//run button
-		run = new JButton();
+		run = new JButton(new ImageIcon ("resources/icons/run.png"));
 		run.setToolTipText("Run the simulator.");
-		run.setIcon(new ImageIcon ("resources/icons/run.png"));
+	//	run.setIcon(new ImageIcon ("resources/icons/run.png"));
 		run.addActionListener( new ActionListener() { 
 			
 			public void actionPerformed(ActionEvent e) {
@@ -112,20 +118,19 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 				run_sim((int)ticks.getValue());
 			}	
 		});
-		this.add(run);
+		toolBar.add(run);
 		
 		
 		//stop button
-		stop = new JButton();
-		stop.setLocation(0, 0); 
-		stop.setSize(120, 30); 
+		stop = new JButton(new ImageIcon ("resources/icons/stop.png"));
+		stop.setToolTipText("Stop the simulator.");
 		stop.addActionListener( new ActionListener() { 
 			
 			public void actionPerformed(ActionEvent e) {
 				stop();
 			}	
 		});
-		this.add(stop);
+		toolBar.add(stop);
 	}
 	
 

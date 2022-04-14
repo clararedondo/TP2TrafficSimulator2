@@ -12,15 +12,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 
-import extra.jtable.EventsTableModel;
 import simulator.control.Controller;
 
 public class MainWindow extends JFrame {
     /**
 	 * 
-	 */ 
-	// ^what does this mean? suppress id
-	
+	 */ 	
 	
 	private static final long serialVersionUID = 1L;
 	private Controller _ctrl;
@@ -58,6 +55,23 @@ public class MainWindow extends JFrame {
 		tablesPanel.add(eventsView);
 		//TODO add other tables
 		//...
+
+		
+		JPanel vehiclesView = 
+				createViewPanel(new JTable (new VehiclesTableModel(_ctrl)), "Vehicles");
+		vehiclesView.setPreferredSize(new Dimension (500, 200));
+		tablesPanel.add(vehiclesView);
+		
+		
+		JPanel roadsView =
+				createViewPanel (new JTable (new RoadsTableModel(_ctrl)), "Roads");
+		roadsView.setPreferredSize(new Dimension(500,200));
+		tablesPanel.add(roadsView);
+		
+		JPanel junctionsView = 
+				createViewPanel(new JTable(new JunctionsTableModel(_ctrl)), "Junctions");
+		junctionsView.setPreferredSize(new Dimension(500,200));
+		tablesPanel.add(junctionsView);
 		
 		
 		//maps
