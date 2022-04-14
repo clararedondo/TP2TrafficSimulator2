@@ -9,7 +9,7 @@ import simulator.misc.SortedArrayList;
 public class TrafficSimulator implements Observable<TrafficSimObserver>{
 	private RoadMap roadMap;
 	private List<Event> eventList; 
-	private List<TrafficSimObserver> obs;
+	private List<TrafficSimObserver> obs = new ArrayList<>();;
 	private int simTime;
 
 	
