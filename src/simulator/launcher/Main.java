@@ -1,13 +1,12 @@
 package simulator.launcher;
 
 import java.io.FileInputStream;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -23,6 +22,7 @@ import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
 import simulator.model.LightSwitchingStrategy;
 import simulator.model.TrafficSimulator;
+import simulator.view.MainWindow;
 import simulator.control.Controller;
 
 public class Main {
@@ -33,6 +33,7 @@ public class Main {
 	private static Factory<Event> _eventsFactory = null;
 	private static int ticks;
 	private static String t;
+	private static boolean batch = false;
 	
 	
 	private static void parseArgs(String[] args) {
@@ -50,6 +51,7 @@ public class Main {
 			parseInFileOption(line);
 			parseOutFileOption(line);
 			parseTickOption(line);
+			parseModeOption(line);
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
 			//
@@ -68,18 +70,7 @@ public class Main {
 
 	}
 
-	private static void parseTickOption(CommandLine line) throws ParseException {
-		
-		if (line.hasOption("t")) {
-			t = line.getOptionValue("t");
-			if (Integer.parseInt(t) < 0 ) throw new IllegalArgumentException("Number of ticks must be positive");
-
-			else ticks = Integer.parseInt(t);
-			
-		}
-		else ticks = _timeLimitDefaultValue;
-
-	}
+	
 
 	private static Options buildOptions() {
 		Options cmdLineOptions = new Options();
@@ -90,6 +81,8 @@ public class Main {
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
 		cmdLineOptions.addOption(Option.builder("t").longOpt("tick").hasArg().desc("Ticks to the simulator's main loop. "
 				+ "Default value is " + _timeLimitDefaultValue + ".").build());
+		cmdLineOptions.addOption(Option.builder("m").longOpt("mode").hasArg().desc("Select the mode for the simulation: GUI or console mode.").build());
+
 
 		return cmdLineOptions;
 	}
@@ -113,6 +106,35 @@ public class Main {
 		_outFile = line.getOptionValue("o");
 	}
 
+	private static void parseTickOption(CommandLine line) throws ParseException {
+		
+		if (line.hasOption("t")) {
+			t = line.getOptionValue("t");
+			if (Integer.parseInt(t) < 0 ) throw new IllegalArgumentException("Number of ticks must be positive");
+
+			else ticks = Integer.parseInt(t);
+			
+		}
+		else ticks = _timeLimitDefaultValue;
+
+	}
+	
+	private static void parseModeOption(CommandLine line) throws ParseException {
+		if (line.hasOption("m")) {	
+			if (line.getOptionValue("m").equals("console")){
+				batch = true;
+			}
+			else if (line.getOptionValue("m").equals("gui")){
+				batch = false;
+			}
+			else throw new ParseException("Unable to recognize mode.");
+		}
+		else {
+			batch = false;
+		
+		}
+	}
+	
 	private static void initFactories() {
 		//light switching
 				ArrayList<Builder<LightSwitchingStrategy>> lsbs = new ArrayList<>();
@@ -159,13 +181,36 @@ public class Main {
 		
 		
 		
+	}
+	
+	private static void startGuiMode() throws IOException {
+		TrafficSimulator sim = new TrafficSimulator();
+		Controller control = new Controller(sim, _eventsFactory);
+		InputStream in = new FileInputStream(_inFile);
+
+		if (_inFile != null) {
+			control.loadEvents(in);
+		}
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				new MainWindow(control); 
+			}	
+		});
 		
 	}
 
 	private static void start(String[] args) throws IOException {
 		initFactories();
 		parseArgs(args);
-		startBatchMode();
+//		startBatchMode();
+		
+		if(batch){
+			startBatchMode();
+		}else {
+			startGuiMode();
+		}
 	}
 
 	// example command lines:
@@ -174,6 +219,10 @@ public class Main {
 	// -i resources/examples/ex1.json -t 300
 	// -i resources/examples/ex1.json -o resources/tmp/ex1.out.json
 	// --help
+
+	
+
+
 
 	public static void main(String[] args) {
 		try {

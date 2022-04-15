@@ -94,7 +94,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		
 		//changeWeather button
 		changeW = new JButton(new ImageIcon ("resources/icons/weather.png"));
-		run.setToolTipText("Change the weather.");
+		changeW.setToolTipText("Change the weather.");
 		//run.setIcon(new ImageIcon ("resources/icons/weather.png"));
 		changeW.addActionListener( new ActionListener() { 
 			
