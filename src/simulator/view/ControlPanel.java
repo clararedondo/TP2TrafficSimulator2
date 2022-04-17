@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -22,10 +23,14 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import simulator.control.Controller;
+import simulator.misc.Pair;
 import simulator.view.MainWindow; //probando
 import simulator.model.Event;
+import simulator.model.Road;
 import simulator.model.RoadMap;
+import simulator.model.SetContClassEvent;
 import simulator.model.TrafficSimObserver;
+import simulator.model.Vehicle;
 
 public class ControlPanel extends JPanel implements TrafficSimObserver{
 
@@ -38,8 +43,13 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	public JToolBar toolBar;
 	private JButton load, changeCont, changeW, run, stop, exit;
 	//for run sim method, not sure
+	private MainWindow mW;
 	private JSpinner ticks;
+	private List<Vehicle> vehicles;
+	private List<Road> roads;
 	private boolean _stopped;
+	private boolean hasLoaded;
+	private int time;
 	
 	public ControlPanel(Controller c) {
 		this._ctrl = c;
@@ -59,19 +69,23 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		//load.setIcon(new ImageIcon ("resources/icons/open.png"));
 		
 		
-		//fileChooser - check this
+		//fileChooser - check this THIS IS WRONG
 		fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "/resources"));
 		fileChooser.setMultiSelectionEnabled(false);
 		
+		//int fileNo = fileChooser.showOpenDialog(this.getParent());
+		
 		load.addActionListener( new ActionListener() { 		
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				//should open dialogue
-				try {
-					loadEvents(new FileInputStream(fileChooser.getSelectedFile()));
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				} 
+				//try {
+					//LINE HAS PROBLEMS
+					loadEvents();
+				//} catch (FileNotFoundException e1) {
+				//	e1.printStackTrace();
+				//} 
 			}	
 		});
 		toolBar.add(load);
@@ -134,10 +148,10 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	}
 	
 
-	private void loadEvents(FileInputStream fileInputStream) {
+	private void loadEvents() {
 		// complete
-		JSONObject jo = new JSONObject(new JSONTokener(fileInputStream));
-		JSONArray events = jo.getJSONArray("events");
+		//?JSONObject jo = new JSONObject(new JSONTokener(fileInputStream));
+		//?JSONArray events = jo.getJSONArray("events");
 	
 		//have to find a way to acces trafficSim and eventsFactory
 		//probably best to call a method in controller that does it
@@ -147,12 +161,42 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 //			_ctrl.trafficSim.addEvent(_ctrl.evFactory.createInstance(events.getJSONObject(i)));
 //		}
 		//solution for now 
-		_ctrl.loadEvents2(fileInputStream, events);
+		
+		 
+		int fileInt = fileChooser.showOpenDialog(this.getParent());
+		if (fileInt == JFileChooser.APPROVE_OPTION) {
+			try {
+				FileInputStream fIS = new FileInputStream(fileChooser.getSelectedFile());
+				_ctrl.reset();
+				_ctrl.loadEvents(fIS);
+				//_ctrl.run(0);
+				hasLoaded = true;
+				
+			}
+			catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "[ERROR] Loading file error.", "[ERROR]", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		//_ctrl.loadEvents2(fileInputStream, events);
 		
 	}
 
 	private void changeContamination() {
-		// complete
+		if(!hasLoaded) {
+			JOptionPane.showMessageDialog(null, "The simulator will add the vehicles once you load a file.", "Warning", JOptionPane.WARNING_MESSAGE);
+		}
+		else{
+			ChangeCO2ClassDialog co2Dialog = new ChangeCO2ClassDialog(mW);
+			List<Vehicle> vehicleIDs = new ArrayList<Vehicle>(vehicles);
+			int status = co2Dialog.open(vehicleIDs);
+			if(status != 0) {
+				List<Pair<String, Integer>> contClass = new ArrayList<Pair<String, Integer>>();
+				Pair<String, Integer> id = new Pair<String, Integer>(co2Dialog.getVehicle().getId(), co2Dialog.getTypes());
+				contClass.add(id);
+				Event e = new SetContClassEvent(time + co2Dialog.getTicks(), contClass);
+				_ctrl.addEvent(e);
+			}
+		}
 		
 	}
 	
@@ -197,14 +241,16 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		vehicles = map.getVehicles();
+		roads = map.getRoads();
+		this.time = time;		
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		vehicles = map.getVehicles();
+		roads = map.getRoads();
+		this.time = time;		
 	}
 
 	@Override

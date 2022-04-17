@@ -1,6 +1,8 @@
-package extra.dialog;
+package simulator.view;
 
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 import simulator.model.Vehicle;
 
@@ -25,10 +27,8 @@ public class ChangeCO2ClassDialog extends JDialog{
 	private int _status;
 	private JComboBox<Vehicle> vehicles;
 	private DefaultComboBoxModel<Vehicle> vehiclesModel;
-//	private JComboBox<Vehicle> _vehicles;
-//	private DefaultComboBoxModel<Vehicle> _vehiclesModel;
-//	private JComboBox<Vehicle> _vehicles;
-//	private DefaultComboBoxModel<Vehicle> _vehiclesModel;
+	private JComboBox<String> types;
+	private JSpinner ticks;
 
 	public ChangeCO2ClassDialog(Frame parent) {
 		super(parent, true);
@@ -36,9 +36,7 @@ public class ChangeCO2ClassDialog extends JDialog{
 	}
 
 	private void initGUI() {
-
 		_status = 0;
-
 		setTitle("Change CO2 Class");
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -65,8 +63,31 @@ public class ChangeCO2ClassDialog extends JDialog{
 		vehiclesModel = new DefaultComboBoxModel<>();
 		vehicles = new JComboBox<>(vehiclesModel);
 
+		viewsPanel.add(new JLabel("Vehicle: "));
 		viewsPanel.add(vehicles);
+		
+		String[] typesList = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 
+		types = new JComboBox<String>(typesList);
+		types.setSelectedIndex(0);
+		types.setToolTipText("COntamination Classes:");
+		
+		viewsPanel.add(new JLabel("CO2 Class:"));
+		
+		types.setMaximumSize(new Dimension(100, 30));
+		types.setPreferredSize(new Dimension(100, 30));
+		
+		viewsPanel.add(types);
+		
+		ticks = new JSpinner(new SpinnerNumberModel());
+		ticks.setValue(1);
+		
+		viewsPanel.add(new JLabel("Ticks: "));
+		
+		ticks.setSize(100, 30);
+		viewsPanel.add(ticks);
+		
+		
 		// good
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
@@ -94,7 +115,7 @@ public class ChangeCO2ClassDialog extends JDialog{
 
 		setPreferredSize(new Dimension(500, 200));
 		pack();
-		setResizable(false);
+		setResizable(false); // true?
 		setVisible(false);
 	}
 // to here^^
@@ -121,7 +142,14 @@ public class ChangeCO2ClassDialog extends JDialog{
 	Vehicle getVehicle() {
 		return (Vehicle) vehiclesModel.getSelectedItem();
 	}
+	
+	 protected int getTypes() {
+			return Integer.parseInt((String) types.getSelectedItem());
+		}
+
+	public int getTicks() {
+		return (int) ticks.getValue();
+	}
 
 }
 
-}
