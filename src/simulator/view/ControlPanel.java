@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -68,7 +69,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		//load button     
 		load = new JButton(new ImageIcon ("resources/icons/open.png"));
 		load.setToolTipText("Load an event file.");
-		//load.setIcon(new ImageIcon ("resources/icons/open.png"));
 		
 		
 		//fileChooser - check this THIS IS WRONG
@@ -97,9 +97,9 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		//changeContamination button - 
 		changeCont = new JButton(new ImageIcon ("resources/icons/co2class.png"));
 		changeCont.setToolTipText("Change the contamination.");
-	//	changeCont.setIcon(new ImageIcon ("resources/icons/co2class.png"));
+		
 		changeCont.addActionListener( new ActionListener() { 
-			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				changeContamination(); //should open dialogue
 			}
@@ -111,7 +111,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		//changeWeather button
 		changeW = new JButton(new ImageIcon ("resources/icons/weather.png"));
 		changeW.setToolTipText("Change the weather.");
-		//run.setIcon(new ImageIcon ("resources/icons/weather.png"));
 		changeW.addActionListener( new ActionListener() { 
 			
 			public void actionPerformed(ActionEvent e) {
@@ -125,7 +124,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		//run button
 		run = new JButton(new ImageIcon ("resources/icons/run.png"));
 		run.setToolTipText("Run the simulator.");
-	//	run.setIcon(new ImageIcon ("resources/icons/run.png"));
 		run.addActionListener( new ActionListener() { 
 			
 			public void actionPerformed(ActionEvent e) {
@@ -161,8 +159,31 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		ticks.setPreferredSize(new Dimension(50,30));
 		ticks.setValue(10);
 		toolBar.add(ticks);
+		toolBar.addSeparator();
+		//toolBar.add(Box.createGlue());
 		
-		//exit button missing
+		
+		
+		//exit button 
+		exit = new JButton(new ImageIcon ("resources/icons/exit.png"));
+		exit.setToolTipText("Exit simulator");
+		exit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int n = JOptionPane.showOptionDialog(null, "You are going to exit the simulator, are you sure?",
+						"Exit", 
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, null, null);
+				if (n == 0) {
+					System.exit(0);
+				}
+
+			}
+			
+		});
+		toolBar.add(exit);
+		
 	}
 	
 	
@@ -203,10 +224,11 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	}
 
 	private void changeContamination() {
-		if(!hasLoaded) {
-			JOptionPane.showMessageDialog(null, "The simulator will add the vehicles once you load a file.", "Warning", JOptionPane.WARNING_MESSAGE);
-		}
-		else{
+		//commented this out just to see if it works
+//		if(!hasLoaded) {
+//			JOptionPane.showMessageDialog(null, "The simulator will add the vehicles once you load a file.", "Warning", JOptionPane.WARNING_MESSAGE);
+//		}
+//		else{
 			ChangeCO2ClassDialog co2Dialog = new ChangeCO2ClassDialog(mW);
 			List<Vehicle> vehicleIDs = new ArrayList<Vehicle>(vehicles);
 			int status = co2Dialog.open(vehicleIDs);
@@ -217,13 +239,13 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 				Event e = new SetContClassEvent(time + co2Dialog.getTicks(), contClass);
 				_ctrl.addEvent(e);
 			}
-		}
+//		}
 		
 	}
 	
 
 	private void changeWeather() {
-		// complete
+		ChangeWeatherDialog weatherDialog = new ChangeWeatherDialog(mW);
 		
 	}
 	
