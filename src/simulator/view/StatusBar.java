@@ -40,7 +40,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 		this.setLayout( new FlowLayout( FlowLayout.LEFT )); 
 		this.setBorder( BorderFactory.createBevelBorder( 1 ));
 		
-		this.add(_currTime);
+		
 		this.add(_message);
 		
 		toolBar = new JToolBar();
@@ -71,7 +71,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		this._currTime.setText("Time: " + time);
+		this._currTime.setText("" + time);
 	}
 
 	@Override
@@ -88,12 +88,12 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
-		boolean first = false;
+		boolean first = true;
 		for (int i = 0; i < events.size(); ++i) {
 			_currTime.setText( time + "");
 			
 			if (events.get(i).getTime() > time + 1 && !first){
-				first = true;
+				first = false;
 				eventDescr.setText("Event added (" + events.get(i).toString() + ")");
 			}
 		}

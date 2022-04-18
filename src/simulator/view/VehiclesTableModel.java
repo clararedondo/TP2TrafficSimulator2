@@ -40,7 +40,7 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 
 	@Override
 	public String getColumnName(int columnIndex) {
-		return columnLabels[columnIndex].toString();
+		return columnLabels[columnIndex];
 	}
 
 	

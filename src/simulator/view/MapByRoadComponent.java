@@ -24,7 +24,6 @@ import simulator.model.VehicleStatus;
 
 public class MapByRoadComponent extends JComponent implements TrafficSimObserver{
 
-
 	/**
 	 * 
 	 */
@@ -37,9 +36,10 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 	private static final Color _JUNCTION_LABEL_COLOR = new Color(200, 100, 0);
 	private static final Color _GREEN_LIGHT_COLOR = Color.GREEN;
 	private static final Color _RED_LIGHT_COLOR = Color.RED;
-
+	private Image _weather, _cloud, _rain, _storm, _sun, _wind, _car;
+	private Image cont_0, cont_1, cont_2, cont_3, cont_4, cont_5;
 	private RoadMap _map;
-	private Image _car;
+
 
 	public MapByRoadComponent(Controller ctrl) {
 		initGUI();
@@ -49,6 +49,18 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 	
 	private void initGUI() {
 		_car = loadImage("car_front.png");
+		_cloud = loadImage("cloud.png");
+		_rain = loadImage("rain.png");
+		_storm = loadImage("storm.png");
+		_sun = loadImage("sun.png");
+		_wind = loadImage("wind.png");
+		
+		cont_0 = loadImage("cont_0.png");
+		cont_1 = loadImage("cont_1.png");
+		cont_2 = loadImage("cont_2.png");
+		cont_3 = loadImage("cont_3.png");
+		cont_4 = loadImage("cont_4.png");
+		cont_5 = loadImage("cont_5.png");
 	}
 
 	public void paintComponent(Graphics graphics) {
@@ -71,8 +83,18 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 	}
 
 	private void updatePrefferedSize() {
-		// TODO Auto-generated method stub
-		
+		int maxW = 200;
+		int maxH = 200;
+		for (Junction j : _map.getJunctions()) {
+			maxW = Math.max(maxW, j.getX());
+			maxH = Math.max(maxH, j.getY());
+		}
+		maxW += 20;
+		maxH += 20;
+		if (maxW > getWidth() || maxH > getHeight()) {
+			setPreferredSize(new Dimension(maxW, maxH));
+			setSize(new Dimension(maxW, maxH));
+		}
 	}
 
 
@@ -171,32 +193,31 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		this._map = map;
+		repaint();
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
-		
+		this._map = map;
+		repaint();
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		this._map = map;
+		repaint();
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		this._map = map;
+		repaint();
 	}
 
 	@Override

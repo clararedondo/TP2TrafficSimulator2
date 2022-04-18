@@ -2,6 +2,7 @@ package simulator.view;
 
 import java.util.ArrayList;
 
+
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -39,15 +40,15 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 
 	@Override
 	public String getColumnName(int columnIndex) {
-		return columnLabels[columnIndex].toString();
+		return columnLabels[columnIndex];
 	}
 
-	@Override
-	public Class<?> getColumnClass(int columnIndex) {
-		return columnLabels[columnIndex].getClass(); //illegal :(
-	}
+//	@Override
+//	public Class<?> getColumnClass(int columnIndex) {
+//		return columnLabels[columnIndex].getClass(); //illegal :(
+//	}
 
-//	to be honest there might not be anything editable here for junctions
+
 	
 //  @Override
 //	public boolean isCellEditable(int rowIndex, int columnIndex) {

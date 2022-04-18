@@ -47,7 +47,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private Controller _ctrl;
 	public JToolBar toolBar;
 	private JButton load, changeCont, changeW, run, stop, exit;
-	//for run sim method, not sure
 	private MainWindow mW;
 	private JSpinner ticks;
 	private List<Vehicle> vehicles;
@@ -286,7 +285,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		changeCont.setEnabled(enable);
 		changeW.setEnabled(enable);
 		run.setEnabled(enable);
-//		ticks.setEnabled(enable);
+		ticks.setEnabled(enable);
 		stop.setEnabled(enable);
 	}
 	

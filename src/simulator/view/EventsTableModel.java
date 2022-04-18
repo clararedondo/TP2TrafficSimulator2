@@ -37,18 +37,18 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 
 	@Override
 	public String getColumnName(int columnIndex) {
-		return columnLabels[columnIndex].toString();
+		return columnLabels[columnIndex];
 	}
 
-	@Override
-	public Class<?> getColumnClass(int columnIndex) {
-		return columnLabels[columnIndex].getClass();
-	}
-
-	@Override
-	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return false;
-	} //can i delete this method?
+//	@Override
+//	public Class<?> getColumnClass(int columnIndex) {
+//		return columnLabels[columnIndex].getClass();
+//	}
+//
+//	@Override
+//	public boolean isCellEditable(int rowIndex, int columnIndex) {
+//		return false;
+//	} //can i delete this method?
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {

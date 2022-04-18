@@ -40,7 +40,8 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
 
 	@Override
 	public String getColumnName(int columnIndex) {
-		return columnLabels[columnIndex].toString();
+		return columnLabels[columnIndex];
+		
 	}
 
 	@Override

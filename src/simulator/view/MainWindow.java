@@ -76,16 +76,14 @@ public class MainWindow extends JFrame {
 		
 		//maps
 		JPanel mapView = createViewPanel(new MapComponent(_ctrl), "Map");
-		mapView.setPreferredSize(new Dimension(500, 400)); mapsPanel.add(mapView);
+		mapView.setPreferredSize(new Dimension(500, 400)); 
 		mapsPanel.add(mapView);
 		
-		//dont understand this line
-//		map for MapByRoadComponent
-//		
-//		JPanel mapByRoad = createViewPanel(new MapByRoadComponent(_ctrl), "Map by Road");
-//		mapByRoad.setPreferredSize(new Dimension(500, 400));
-//		mapsPanel.add(mapByRoad);
-		//...
+		
+		JPanel mapByRoad = createViewPanel(new MapByRoadComponent(_ctrl), "Map by Road");
+		mapByRoad.setPreferredSize(new Dimension(500, 400));
+		mapsPanel.add(mapByRoad);
+	
 		
 		
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE); 
