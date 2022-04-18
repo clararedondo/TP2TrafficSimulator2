@@ -193,6 +193,10 @@ public class Vehicle extends SimulatedObject{
 		return totalCont;
 	}
 	
+	public int getDistanceTraveled() {
+		return totalTraveledDistance;
+	}
+	
 	public List<Junction> getItinerary(){
 		return itinerary;
 	}
