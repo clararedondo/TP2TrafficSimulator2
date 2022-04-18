@@ -4,7 +4,6 @@ package simulator.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
@@ -129,45 +128,35 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 		}
 	}
 
-	@Override
-	public void addTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void removeTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		//need an update table methd?
+		this.vehicles= map.getVehicles();
+		this.fireTableDataChanged();
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		this.vehicles= map.getVehicles();
+		this.fireTableDataChanged();
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
-		
+		this.vehicles= map.getVehicles();
+		this.fireTableDataChanged();
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		this.vehicles= map.getVehicles();
+		this.fireTableDataChanged();
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
+		this.vehicles= map.getVehicles();
+		this.fireTableDataChanged();
 		
 	}
 

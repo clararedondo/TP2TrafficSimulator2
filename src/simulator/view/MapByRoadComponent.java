@@ -112,6 +112,12 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 
 	}
 
+	private void drawLineWithArrow(Graphics g, int x1, int y1, int x2, int y2, int i, int j, Color roadColor,
+			Color arrowColor) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void drawVehicles(Graphics g) {
 		for (Vehicle v : _map.getVehicles()) {
 			if (v.getStatus() != VehicleStatus.ARRIVED) {
@@ -159,7 +165,7 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 			g.setColor(_JUNCTION_LABEL_COLOR);
 			g.drawString(j.getId(), x, y);
 		}
-	}
+	
 		
 	}
 

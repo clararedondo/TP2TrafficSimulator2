@@ -162,7 +162,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		ticks.setValue(10);
 		toolBar.add(ticks);
 		toolBar.addSeparator();
-		//toolBar.add(Box.createGlue());
+		
 		
 		
 		
@@ -246,11 +246,11 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 
 	private void changeWeather() {
 		ChangeWeatherDialog weatherDialog = new ChangeWeatherDialog(mW);
-		List<Vehicle> vehicleIDs = new ArrayList<Vehicle>(vehicles);
-		int status = weatherDialog.open(vehicleIDs);
+		List<Road> roadsIDs = new ArrayList<Road>(roads);
+		int status = weatherDialog.open(roadsIDs);
 		if(status != 0) {
 			List<Pair<String, Weather>> weather = new ArrayList<Pair<String, Weather>>();
-			Pair<String, Weather> id = new Pair<String, Weather>(weatherDialog.getVehicle().getId(), weatherDialog.getTypes());
+			Pair<String, Weather> id = new Pair<String, Weather>(weatherDialog.getRoads().getId(), weatherDialog.getTypes());
 			weather.add(id);
 			Event e = new SetWeatherEvent(time + weatherDialog.getTicks(), weather);
 			_ctrl.addEvent(e);
@@ -306,20 +306,23 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
-		
+		vehicles = map.getVehicles();
+		roads = map.getRoads();
+		this.time = time;
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		vehicles = map.getVehicles();
+		roads = map.getRoads();
+		this.time = time;
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		vehicles = map.getVehicles();
+		roads = map.getRoads();
+		this.time = time;
 	}
 
 	@Override

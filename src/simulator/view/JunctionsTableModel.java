@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
@@ -63,6 +62,7 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 //		
 //	}
 
+	@SuppressWarnings("null")
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object valueAt = null;
@@ -84,11 +84,12 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 			break;
 		//queues
 		case 2:
-			Object j = null;
+			//Object j = null;
 			for (int i = 0; i < junctions.get(rowIndex).getInRoads().size(); i++) {
-				String id= junctions.get(rowIndex).getInRoads().get(i).getId();
-				j = id + ":" + "[" +  roadMap.getJunction(junctions.get(rowIndex).getId()).getInRoads().get(Integer.valueOf(id)).getVehicles().toString() + "]";
-				//most definitely wrong but ive been trying too long and now i cant think of other ways
+			//	String id= junctions.get(rowIndex).getInRoads().get(i).getId();
+				//j = id + ":" + "[" +  roadMap.getJunction(junctions.get(rowIndex).getId()).getInRoads().get(Integer.valueOf(id)).getVehicles().toString() + "]";
+				valueAt += junctions.get(rowIndex).getInRoads().get(i).getId() + ":" + junctions.get(rowIndex).getRoadMap().get(junctions.get(rowIndex).getInRoads().get(i)).toString() + " ";
+//most definitely wrong but ive been trying too long and now i cant think of other ways
 				//the goal is to run through all inc roads of junctions.get(rowIndex) and then 
 				//display r1: [v1,v2,v3]  --> so name of that road and its queue
 				//sos
@@ -99,52 +100,41 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 		return valueAt;
 	}
 
-	@Override
-	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
-		//dont think we need this
-	}
+//	@Override
+//	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+//		// TODO Auto-generated method stub
+//		//dont think we need this
+//	}
 
-	@Override
-	public void addTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void removeTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		this.junctions = map.getJunctions();
+		this.fireTableStructureChanged();
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		this.junctions = map.getJunctions();
+		this.fireTableStructureChanged();
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
-		
+		this.junctions = map.getJunctions();
+		this.fireTableStructureChanged();
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		this.junctions = map.getJunctions();
+		this.fireTableStructureChanged();
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		this.junctions = map.getJunctions();
+		this.fireTableStructureChanged();
 	}
 
 	@Override

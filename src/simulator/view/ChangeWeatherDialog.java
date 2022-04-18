@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import simulator.model.Road;
 import simulator.model.Vehicle;
 import simulator.model.Weather;
 
@@ -26,8 +27,10 @@ public class ChangeWeatherDialog extends JDialog{
 	private static final long serialVersionUID = 1L;
 
 	private int _status;
-	private JComboBox<Vehicle> vehicles;
-	private DefaultComboBoxModel<Vehicle> vehiclesModel;
+//	private JComboBox<Vehicle> vehicles;
+//	private DefaultComboBoxModel<Vehicle> vehiclesModel;
+	private JComboBox<Road> roads;
+	private DefaultComboBoxModel<Road> roadsModel;
 	private JComboBox<String> types;
 	private JSpinner ticks;
 
@@ -63,11 +66,12 @@ public class ChangeWeatherDialog extends JDialog{
 		buttonsPanel.setAlignmentX(CENTER_ALIGNMENT);
 		mainPanel.add(buttonsPanel);
 
-		vehiclesModel = new DefaultComboBoxModel<>();
-		vehicles = new JComboBox<>(vehiclesModel);
+		
+		roadsModel = new DefaultComboBoxModel<>();
+		roads = new JComboBox<>(roadsModel);
 
-		viewsPanel.add(new JLabel("Vehicle: "));
-		viewsPanel.add(vehicles);
+		viewsPanel.add(new JLabel("Road: "));
+		viewsPanel.add(roads);
 		
 		String[] typesList = {"SUNNY", "CLOUDY", "RAINY", "WINDY", "STORM"};
 
@@ -108,7 +112,7 @@ public class ChangeWeatherDialog extends JDialog{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (vehiclesModel.getSelectedItem() != null) {
+				if (roadsModel.getSelectedItem() != null) {
 					_status = 1;
 					ChangeWeatherDialog.this.setVisible(false);
 				}
@@ -123,14 +127,14 @@ public class ChangeWeatherDialog extends JDialog{
 	}
 // to here^^
 	
-	public int open(List<Vehicle> vehicles) {
+	public int open(List<Road> roads) {
 
 		// update the comboxBox model -- if you always use the same no
 		// need to update it, you can initialize it in the constructor.
 		//
-		vehiclesModel.removeAllElements();
-		for (Vehicle v : vehicles)
-			vehiclesModel.addElement(v);
+		roadsModel.removeAllElements();
+		for (Road r : roads)
+			roadsModel.addElement(r);
 
 		// You can change this to place the dialog in the middle of the parent window.
 		// It can be done using using getParent().getWidth, this.getWidth(),
@@ -142,8 +146,8 @@ public class ChangeWeatherDialog extends JDialog{
 		return _status;
 	}
 
-	Vehicle getVehicle() {
-		return (Vehicle) vehiclesModel.getSelectedItem();
+	Road getRoads() {
+		return (Road) roadsModel.getSelectedItem();
 	}
 	
 	 protected Weather getTypes() {
