@@ -65,7 +65,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		//initialize buttons
 		//load button     
 		load = new JButton(new ImageIcon ("resources/icons/open.png"));
-		load.setToolTipText("Run the simulator.");
+		load.setToolTipText("Load an event file.");
 		//load.setIcon(new ImageIcon ("resources/icons/open.png"));
 		
 		

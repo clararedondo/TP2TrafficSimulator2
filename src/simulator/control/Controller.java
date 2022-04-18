@@ -38,7 +38,7 @@ public class Controller {
 		
 		for (int i = 0; i < e.length(); i++) {
 			ev = evFactory.createInstance(e.optJSONObject(i));
-			trafficSim.addEvent(ev);
+			addEvent(ev);
 			//this.trafficSim.addEvent(this.evFactory.createInstance(e.optJSONObject(i)));
 		}
 		
