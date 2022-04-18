@@ -32,8 +32,10 @@ import simulator.model.Event;
 import simulator.model.Road;
 import simulator.model.RoadMap;
 import simulator.model.SetContClassEvent;
+import simulator.model.SetWeatherEvent;
 import simulator.model.TrafficSimObserver;
 import simulator.model.Vehicle;
+import simulator.model.Weather;
 
 public class ControlPanel extends JPanel implements TrafficSimObserver{
 
@@ -174,7 +176,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 				int n = JOptionPane.showOptionDialog(null, "You are going to exit the simulator, are you sure?",
 						"Exit", 
 						JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, null, null);
+						JOptionPane.QUESTION_MESSAGE, null, null, null); //can't exit unless has started
 				if (n == 0) {
 					System.exit(0);
 				}
@@ -218,9 +220,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 			catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "[ERROR] Loading file error.", "[ERROR]", JOptionPane.ERROR_MESSAGE);
 			}
-		}
-		//_ctrl.loadEvents2(fileInputStream, events);
-		
+		}		
 	}
 
 	private void changeContamination() {
@@ -246,7 +246,15 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 
 	private void changeWeather() {
 		ChangeWeatherDialog weatherDialog = new ChangeWeatherDialog(mW);
-		
+		List<Vehicle> vehicleIDs = new ArrayList<Vehicle>(vehicles);
+		int status = weatherDialog.open(vehicleIDs);
+		if(status != 0) {
+			List<Pair<String, Weather>> weather = new ArrayList<Pair<String, Weather>>();
+			Pair<String, Weather> id = new Pair<String, Weather>(weatherDialog.getVehicle().getId(), weatherDialog.getTypes());
+			weather.add(id);
+			Event e = new SetWeatherEvent(time + weatherDialog.getTicks(), weather);
+			_ctrl.addEvent(e);
+		}
 	}
 	
 	private void run_sim(int n) {
