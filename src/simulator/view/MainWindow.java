@@ -53,9 +53,6 @@ public class MainWindow extends JFrame {
 				createViewPanel(new JTable(new EventsTableModel(_ctrl)), "Events");
 		eventsView.setPreferredSize(new Dimension(500, 200));
 		tablesPanel.add(eventsView);
-		//TODO add other tables
-		//...
-
 		
 		JPanel vehiclesView = 
 				createViewPanel(new JTable (new VehiclesTableModel(_ctrl)), "Vehicles");
@@ -77,7 +74,11 @@ public class MainWindow extends JFrame {
 		//maps
 		JPanel mapView = createViewPanel(new MapComponent(_ctrl), "Map");
 		mapView.setPreferredSize(new Dimension(500, 400)); mapsPanel.add(mapView);
-		//TODO add a map for MapByRoadComponent
+		mapsPanel.add(mapView);
+		//map for MapByRoadComponent
+		JPanel mapByRoad = createViewPanel(new MapByRoadComponent(_ctrl), "Map by Road");
+		mapByRoad.setPreferredSize(new Dimension(500, 400));
+		mapsPanel.add(mapByRoad);
 		//...
 		
 		
