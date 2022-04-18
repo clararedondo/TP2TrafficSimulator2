@@ -159,6 +159,12 @@ public class Junction extends SimulatedObject{
 		return incRoads;
 	}
 	
+	//Pract2
+	
+	public Map<Road,List<Vehicle>> getRoadMap() {
+		return this.rqMap;
+	}
+	
 	
 	
 }

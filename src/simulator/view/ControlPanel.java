@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -12,6 +13,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -145,7 +147,26 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 			}	
 		});
 		toolBar.add(stop);
+		
+		
+		
+		//tick JLabel
+		JLabel tickLabel = new JLabel(" Ticks: ");
+		toolBar.add(tickLabel);
+		//tick JSpinner
+		ticks = new JSpinner();
+		ticks.setToolTipText("Number of simulation steps or ticks");
+		ticks.setMaximumSize(new Dimension(50,30));
+		ticks.setMinimumSize(new Dimension(50,30));
+		ticks.setPreferredSize(new Dimension(50,30));
+		ticks.setValue(10);
+		toolBar.add(ticks);
+		
+		//exit button missing
 	}
+	
+	
+	
 	
 
 	private void loadEvents() {
@@ -235,8 +256,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		changeCont.setEnabled(enable);
 		changeW.setEnabled(enable);
 		run.setEnabled(enable);
-		ticks.setEnabled(enable);
-		exit.setEnabled(enable);
+//		ticks.setEnabled(enable);
+		stop.setEnabled(enable);
 	}
 	
 	@Override

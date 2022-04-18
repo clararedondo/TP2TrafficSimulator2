@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.swing.event.TableModelListener;
@@ -19,8 +20,8 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	 */
 	private static final long serialVersionUID = 1L;
 	private List<Junction> junctions;
-	private String[] colName = {"Id", "Green", "Queues"};
-	
+	private String[] columnLabels = {"Id", "Green", "Queues"};
+	private RoadMap roadMap;
 	
 	public JunctionsTableModel (Controller control) {
 		junctions = new ArrayList<Junction>();
@@ -29,44 +30,79 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	
 	@Override
 	public int getRowCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return junctions.size();
 	}
 
 	@Override
 	public int getColumnCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return columnLabels.length;
 	}
 
 	@Override
 	public String getColumnName(int columnIndex) {
-		// TODO Auto-generated method stub
-		return null;
+		return columnLabels[columnIndex].toString();
 	}
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		// TODO Auto-generated method stub
-		return null;
+		return columnLabels[columnIndex].getClass(); //illegal :(
 	}
 
-	@Override
-	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+//	to be honest there might not be anything editable here for junctions
+	
+//  @Override
+//	public boolean isCellEditable(int rowIndex, int columnIndex) {
+//		if(rowIndex == 0) {
+//			return false;
+//		}
+//		//uneditable id
+//		if (columnIndex == 0){
+//			return false;
+//		}
+//		else return true;
+//		
+//	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
-		return null;
+		Object valueAt = null;
+		
+		switch(columnIndex) {
+		//ID
+		case 0:
+			valueAt = junctions.get(rowIndex).getId();
+			break;
+		//id of incoming road with green light (none if all red)
+		case 1:
+			int g = junctions.get(rowIndex).getGreenLightIndex();
+			if(g >= 0) {
+				valueAt = junctions.get(rowIndex).getInRoads().get(g).getId();
+			}
+			else { 
+				valueAt = "None";
+			}
+			break;
+		//queues
+		case 2:
+			Object j = null;
+			for (int i = 0; i < junctions.get(rowIndex).getInRoads().size(); i++) {
+				String id= junctions.get(rowIndex).getInRoads().get(i).getId();
+				j = id + ":" + "[" +  roadMap.getJunction(junctions.get(rowIndex).getId()).getInRoads().get(Integer.valueOf(id)).getVehicles().toString() + "]";
+				//most definitely wrong but ive been trying too long and now i cant think of other ways
+				//the goal is to run through all inc roads of junctions.get(rowIndex) and then 
+				//display r1: [v1,v2,v3]  --> so name of that road and its queue
+				//sos
+			}
+			break;
+		}
+			
+		return valueAt;
 	}
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub
-
+		//dont think we need this
 	}
 
 	@Override

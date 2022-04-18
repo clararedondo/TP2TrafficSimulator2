@@ -11,6 +11,7 @@ import simulator.model.Event;
 import simulator.model.Road;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
+import simulator.model.Weather;
 
 public class RoadsTableModel extends AbstractTableModel implements TrafficSimObserver {
 
@@ -18,9 +19,8 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	private List<Road> roads;
-	private String[] colName = {"Id", "Length", "Weather", "Max. Speed", "Speed Limit", "Total CO2", "CO2 Limit"};
+	private String[] columnLabels = {"Id", "Length", "Weather", "Max. Speed", "Speed Limit", "Total CO2", "CO2 Limit"};
 	
 	
 	public RoadsTableModel (Controller control) {
@@ -30,43 +30,96 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
 	
 	@Override
 	public int getRowCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return roads.size();
 	}
 
 	@Override
 	public int getColumnCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return columnLabels.length;
 	}
 
 	@Override
 	public String getColumnName(int columnIndex) {
-		// TODO Auto-generated method stub
-		return null;
+		return columnLabels[columnIndex].toString();
 	}
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		// TODO Auto-generated method stub
-		return null;
+		return columnLabels[columnIndex].getClass(); //illegal
 	}
 
 	@Override
-	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isCellEditable(int rowIndex, int columnIndex) { //what is this?
+		
+		if(rowIndex == 0) {
+			return false;
+		}
+		//uneditable id, length, c02limit
+		if (columnIndex == 0 | columnIndex == 1 | columnIndex == 6){
+			return false;
+		}
+		else return true;
+		
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
-		return null;
+		Object valueAt = null;
+		
+		switch(columnIndex) { //shouldnt id be column 1? column 0 is the actual road? 
+		//ID
+		case 0:
+			valueAt = roads.get(rowIndex).getId();
+			break;
+		//Length
+		case 1:
+			valueAt = roads.get(rowIndex).getLength();
+			break;
+		//Weather
+		case 2:
+			valueAt = roads.get(rowIndex).getWeather();
+			break;
+		//Max speed
+		case 3:
+			valueAt = roads.get(rowIndex).getMaxSpeed();
+			break;
+		//Current speed limit
+		case 4:
+			valueAt = roads.get(rowIndex).getCurrSpeedLimit();
+			break;
+		//Total CO2
+		case 5:
+			valueAt = roads.get(rowIndex).getTotalCO2();
+			break;
+		//C02 Limit
+		case 6:
+			valueAt = roads.get(rowIndex).getContLimit();
+			break;
+		}
+		return valueAt;
 	}
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
+		if (isCellEditable(rowIndex,columnIndex)){
+			switch(columnIndex) {
+			//Weather
+			case 2: roads.get(columnIndex).setWeather((Weather) aValue); //parse
+				break;
+			//Max speed
+			case 3: roads.get(columnIndex).setMaxSpeed((int) aValue);  //parse
+				break;
+			//Current speed limit
+			case 4: roads.get(columnIndex).setCurrSpeedLimit((int) aValue); //parse
+				break;
+			//Total CO2
+			case 5: roads.get(columnIndex).setTotalCO2((int) aValue); //parse 
+			
+			
+			
+			}
+			
+		}
 
 	}
 
