@@ -66,7 +66,7 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	@SuppressWarnings("null")
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Object valueAt = null;
+		Object valueAt = "";
 		
 		switch(columnIndex) {
 		//ID
@@ -90,7 +90,7 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 			//	String id= junctions.get(rowIndex).getInRoads().get(i).getId();
 				//j = id + ":" + "[" +  roadMap.getJunction(junctions.get(rowIndex).getId()).getInRoads().get(Integer.valueOf(id)).getVehicles().toString() + "]";
 				valueAt += junctions.get(rowIndex).getInRoads().get(i).getId() + ":" + junctions.get(rowIndex).getRoadMap().get(junctions.get(rowIndex).getInRoads().get(i)).toString() + " ";
-//most definitely wrong but ive been trying too long and now i cant think of other ways
+				//most definitely wrong but ive been trying too long and now i cant think of other ways
 				//the goal is to run through all inc roads of junctions.get(rowIndex) and then 
 				//display r1: [v1,v2,v3]  --> so name of that road and its queue
 				//sos
