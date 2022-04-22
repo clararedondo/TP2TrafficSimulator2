@@ -72,15 +72,13 @@ public class Controller {
 	//PRACTICE 2 NEW METHODS
 	
 	//run method with only 1 arg
-	public void run(int n) { //should probably throw exceptions
-		try {
+	public void run(int n) { 
+		
 			for (int i = 0; i< n; ++i) {
 				trafficSim.advance();
 			}
-		}
-		catch(Exception e){
-			throw e; ///??? parse
-		}
+		
+		
 	}
 	
 	public void reset() {
