@@ -21,7 +21,6 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	private static final long serialVersionUID = 1L;
 	private List<Junction> junctions;
 	private String[] columnLabels = {"Id", "Green", "Queues"};
-	private RoadMap roadMap;
 	
 	public JunctionsTableModel (Controller control) {
 		junctions = new ArrayList<Junction>();

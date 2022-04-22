@@ -22,7 +22,8 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	private static final long serialVersionUID = 1L;
 	private List<Vehicle> vehicles;
 	private String[] columnLabels = {"Id", "Location/Status", "Itinerary", "CO2 Class", "Max. Speed", "Speed", "Total CO2", "Distance"};
-	
+	private RoadMap roadMap;
+
 	public VehiclesTableModel (Controller control) {
 		vehicles = new ArrayList<Vehicle>();
 		control.addObserver(this);
@@ -64,6 +65,7 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object valueAt = null;
+		String s = "";
 		
 		switch(columnIndex) {
 		//ID
@@ -72,9 +74,24 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 			break;
 		//Status
 		case 1:
-			valueAt = vehicles.get(rowIndex).getStatus().toString();
-			//switch(STATUS TYPES DIFFERENT STRINGS){
-			//}
+			s = vehicles.get(rowIndex).getStatus().toString();
+			switch (s) {
+			case "PENDING":
+				valueAt = "Pending";
+				break;
+			case "TRAVELING":
+				//valueAt = "Traveling";
+				//show road and current location on road
+				valueAt = vehicles.get(rowIndex).getRoad().getId() + ":" + vehicles.get(rowIndex).getLocation();
+				break;
+			case "WAITING":
+				valueAt = "Waiting:" + roadMap.getJunction(vehicles.get(rowIndex).getRoad().getId());
+				//show junction at which it is waiting
+				break;
+			case "ARRIVED":
+				valueAt = "Arrived";
+			}
+		
 			break;
 		//Itinerary
 		case 2:
