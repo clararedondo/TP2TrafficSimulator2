@@ -48,10 +48,10 @@ public class Main {
 		try {
 			CommandLine line = parser.parse(cmdLineOptions, args);
 			parseHelpOption(line, cmdLineOptions);
-			parseInFileOption(line);
 			parseOutFileOption(line);
 			parseTickOption(line);
 			parseModeOption(line);
+			parseInFileOption(line);
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
 			//
@@ -98,7 +98,9 @@ public class Main {
 	private static void parseInFileOption(CommandLine line) throws ParseException {
 		_inFile = line.getOptionValue("i");
 		if (_inFile == null) {
-			throw new ParseException("An events file is missing");
+			if(batch==true) {
+				throw new ParseException("An events file is missing");
+			}
 		}
 	}
 
