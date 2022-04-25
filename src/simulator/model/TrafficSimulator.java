@@ -69,10 +69,6 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 		notifyAdvanceEnd();
 	}
 
-
-
-	
-
 	public void reset() { 
 		roadMap.reset();
 		eventList.clear();
@@ -81,8 +77,6 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 		
 	}
 	
-	
-
 	public JSONObject report() {
 		JSONObject jo = new JSONObject();
 		jo.put("time", simTime);

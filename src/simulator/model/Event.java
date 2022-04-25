@@ -3,6 +3,7 @@ package simulator.model;
 public abstract class Event implements Comparable<Event> {
 
 	protected int _time;
+	protected String desc;
 
 	Event(int time) {
 		if (time < 1)
@@ -13,6 +14,18 @@ public abstract class Event implements Comparable<Event> {
 
 	public int getTime() {
 		return _time;
+	}
+	
+	public void setTime(int t) {
+		_time = t;
+	}
+	
+	public String getDesc() {
+		return desc;
+	}
+	
+	public void setDesc(String s) {
+		desc = toString(s);
 	}
 
 	@Override
@@ -34,5 +47,7 @@ public abstract class Event implements Comparable<Event> {
 
 	abstract void execute(RoadMap map);
 	
-	public abstract String toString(); //not sure
+	public String toString(String s){
+		return ("CHANGE " + s + ": [");
+	}
 }
