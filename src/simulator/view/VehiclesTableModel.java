@@ -80,7 +80,7 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 				valueAt = "Pending";
 				break;
 			case "TRAVELING":
-				//valueAt = "Traveling";
+				//valueAt = "Travelling";
 				//show road and current location on road
 				valueAt = vehicles.get(rowIndex).getRoad().getId() + ":" + vehicles.get(rowIndex).getLocation();
 				break;

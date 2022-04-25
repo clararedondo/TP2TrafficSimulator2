@@ -151,7 +151,7 @@ public class ChangeWeatherDialog extends JDialog{
 	}
 	
 	 protected Weather getTypes() {
-			return Weather.parse(types.getSelectedItem());
+			return Weather.parse((String)types.getSelectedItem());
 		}
 
 	public int getTicks() {
