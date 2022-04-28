@@ -10,6 +10,7 @@ import simulator.control.Controller;
 import simulator.model.Event;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
+import simulator.model.VehicleStatus;
 
 public class EventsTableModel extends AbstractTableModel implements TrafficSimObserver {
 
@@ -65,47 +66,55 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	}
 
 
+	@Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+		if(isCellEditable(rowIndex, columnIndex)) {
+			switch(columnIndex) {
+			//Time
+			case 0:
+				events.get(rowIndex).setTime((int) aValue); //parse as a VehicleStatus
+				break;
+			//Desc
+			case 1:
+				events.get(rowIndex).setDesc((String) aValue);
+				break;
+			}
+		}
+	}
 
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
 		this.events = events;
 		this.fireTableStructureChanged();
-				
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
 		this.events = events;
-		this.fireTableStructureChanged();
-				
+		this.fireTableStructureChanged();	
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
 		this.events = events;
-		this.fireTableStructureChanged();
-				
+		this.fireTableStructureChanged();		
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
 		this.events = events;
 		this.fireTableStructureChanged();
-		
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
 		this.events = events;
 		this.fireTableStructureChanged();
-		
-		
 	}
 
 	@Override
 	public void onError(String err) {
 		// TODO Auto-generated method stub
-		
 	}
 
 }

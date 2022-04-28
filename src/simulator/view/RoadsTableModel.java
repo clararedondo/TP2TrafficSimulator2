@@ -115,13 +115,8 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
 				break;
 			//Total CO2
 			case 5: roads.get(columnIndex).setTotalCO2((int) aValue); //parse 
-			
-			
-			
 			}
-			
 		}
-
 	}
 
 
