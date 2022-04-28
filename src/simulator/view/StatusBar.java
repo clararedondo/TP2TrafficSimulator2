@@ -25,9 +25,8 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 
 	private JLabel _currTime =   new JLabel();
 	private JLabel _message = new JLabel("WELCOME! :)");
-	private JLabel eventDescr = new JLabel();
 	private JLabel event = new JLabel();
-	
+	private JLabel eventDescr = new JLabel();
 	private JToolBar toolBar;
 	
 
@@ -56,10 +55,11 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 		toolBar.addSeparator(new Dimension(4, 0));
 		
 		//notify events
-		this.add(eventDescr);
-		eventDescr.setText("");
 		this.add(event);
 		toolBar.add(event);
+		this.add(eventDescr);
+		eventDescr.setText("");
+		
 	}
 	
 	
@@ -78,8 +78,12 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		eventDescr.setText("Event added (");
-		event.setText(e.toString() + ")");
+//		eventDescr.setText("Event added (");
+//		
+//		event.setText(e.toString() + ")");
+//		
+		event.setText("Event added (" + e.toString() + ")");
+
 		
 	}
 
