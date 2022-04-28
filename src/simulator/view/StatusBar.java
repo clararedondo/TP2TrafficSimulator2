@@ -1,7 +1,6 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.List;
@@ -23,6 +22,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	private JLabel _currTime =   new JLabel();
 	private JLabel _message = new JLabel("WELCOME! :)");
 	private JLabel eventDescr = new JLabel();
@@ -32,6 +32,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	
 
 	public StatusBar(Controller _ctrl) {
+
 		initGUI();
 		_ctrl.addObserver(this);
 		}
@@ -40,10 +41,9 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 		this.setLayout( new FlowLayout( FlowLayout.LEFT )); 
 		this.setBorder( BorderFactory.createBevelBorder( 1 ));
 		
-		
-		this.add(_message);
-		
+
 		toolBar = new JToolBar();
+		this.add(_message);
 		this.add(toolBar, BorderLayout.PAGE_END);
 		
 		toolBar.add(new JLabel("Time: "));
@@ -57,7 +57,9 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 		
 		//notify events
 		this.add(eventDescr);
+		eventDescr.setText("");
 		this.add(event);
+		toolBar.add(event);
 	}
 	
 	
@@ -76,14 +78,15 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		eventDescr.setText("Event added (" + e.toString() + ")");
+		eventDescr.setText("Event added (");
+		event.setText(e.toString() + ")");
 		
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		_currTime.setText(time+"");
+		eventDescr.setText("Welcome!");		
 	}
 
 	@Override
@@ -94,7 +97,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 			
 			if (events.get(i).getTime() > time + 1 && !first){
 				first = false;
-				eventDescr.setText("Event added (" + events.get(i).toString() + ")");
+				event.setText("Event added (" + events.get(i).toString() + ")");
 			}
 		}
 		

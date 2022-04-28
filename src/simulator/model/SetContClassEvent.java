@@ -31,6 +31,6 @@ public class SetContClassEvent extends Event {
 
 	@Override
 	public String toString() { //TO DO
-		return null;
+		return "Changed contamination class";
 	}
 }
